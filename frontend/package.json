@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^6.1.2",
     "@tailwindcss/forms": "^0.3.2",
+    "@testing-library/dom": ">=7.21.4",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -26,6 +26,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -59,6 +60,9 @@
   },
   "proxy": "http://localhost:3000",
   "devDependencies": {
+    "@babel/core": "^7.0.0-0",
+    "@babel/plugin-syntax-flow": "^7.14.5",
+    "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@types/react-router-dom": "^5.1.7",
     "autoprefixer": "^9",
     "eslint-plugin-prettier": "^3.4.0",
