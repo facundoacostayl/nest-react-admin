@@ -49,4 +49,8 @@
   .sidebar.show {
     @apply translate-x-0 !important;
   }
+
+  body {
+    font-family: Roboto, Helvetica, Helvetica Neue, Nunito Sans !important;
+  }
 }
