@@ -30,16 +30,16 @@ export default function Sidebar({ className }: SidebarProps) {
           alt=""
         />
       </Link>
-      <nav className="mt-5 flex flex-col gap-3 flex-grow">
+      <nav className="mt-10 flex flex-col gap-3 flex-grow">
         <SidebarItem to="/">
-          <Home /> Dashboard
+          <Home className="text-primary-red" /> Dashboard
         </SidebarItem>
         <SidebarItem to="/courses">
-          <BookOpen /> Courses
+          <BookOpen className="text-primary-red" /> Courses
         </SidebarItem>
         {authenticatedUser.role === 'admin' ? (
           <SidebarItem to="/users">
-            <Users /> Users
+            <Users className="text-primary-red" /> Users
           </SidebarItem>
         ) : null}
       </nav>
