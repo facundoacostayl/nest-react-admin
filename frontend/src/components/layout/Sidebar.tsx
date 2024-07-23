@@ -23,8 +23,12 @@ export default function Sidebar({ className }: SidebarProps) {
 
   return (
     <div className={'sidebar ' + className}>
-      <Link to="/" className="no-underline text-black">
-        <h1 className="font-semibold text-center">Carna Project</h1>
+      <Link to="/" className="w-full no-underline text-black">
+        <img
+          className="mx-auto"
+          src={require('../../assets/urbano-logo-black.png')}
+          alt=""
+        />
       </Link>
       <nav className="mt-5 flex flex-col gap-3 flex-grow">
         <SidebarItem to="/">
