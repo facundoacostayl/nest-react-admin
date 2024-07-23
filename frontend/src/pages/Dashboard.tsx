@@ -9,7 +9,7 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <h1 className="font-semibold text-3xl mb-5">Dashboard</h1>
+      <h1 className="font-medium text-3xl mb-5">Dashboard</h1>
       <hr />
       <div className="mt-5 flex flex-col gap-5">
         {!isLoading ? (
@@ -26,7 +26,7 @@ export default function Dashboard() {
               </h1>
               <p className="text-center sm:text-lg font-semibold">Courses</p>
             </div>
-            <div className="card shadow text-white bg-[#e67878] flex-1">
+            <div className="card shadow text-white bg-[#dd5f5f] flex-1">
               <h1 className="font-semibold sm:text-4xl mb-3 text-center">
                 {data.numberOfContents}
               </h1>
