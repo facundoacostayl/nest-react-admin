@@ -45,7 +45,7 @@ export default function Sidebar({ className }: SidebarProps) {
       </nav>
       <div className="flex items-center justify-between">
         <Link
-          to="/"
+          to={`/user/${authenticatedUser.id}`}
           className="cursor-pointer p-2 rounded-xl bg-primary-gray hover:bg-gray-hover"
         >
           <User className="text-white" />

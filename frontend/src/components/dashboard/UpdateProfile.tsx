@@ -41,10 +41,13 @@ export default function UpdateProfile() {
     return (
       <div className="card shadow">
         <form
-          className="flex mt-3 flex-col gap-3 justify-center md:w-1/2 lg:w-1/3 mx-auto items-center"
+          className="py-5 flex flex-col gap-3 justify-center md:w-1/2 lg:w-1/3 mx-auto items-center"
           onSubmit={handleSubmit(handleUpdateUser)}
         >
-          <h1 className="font-semibold text-4xl mb-10">{`Welcome ${data.firstName}`}</h1>
+          <h1 className="font-semibold text-4xl">{`Welcome again, ${data.firstName}`}</h1>
+          <p className="mb-7 text-primary-gray">
+            here you can update your account's details.
+          </p>
           <hr />
           <div className="flex gap-3 w-full">
             <div className="w-1/2">
