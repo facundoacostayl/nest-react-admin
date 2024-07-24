@@ -45,7 +45,8 @@ export default function Courses() {
   const saveCourse = async (createCourseRequest: CreateCourseRequest) => {
     try {
       if (imageToUpload) {
-        uploadImage();
+        const imageUrl = await uploadImage();
+        createCourseRequest.imageUrl = imageUrl;
       }
 
       await courseService.save(createCourseRequest);
@@ -57,14 +58,17 @@ export default function Courses() {
     }
   };
 
-  const uploadImage = () => {
+  const uploadImage = async () => {
     const formData = new FormData();
     formData.append('file', imageToUpload);
     formData.append('upload_preset', 'qd303rrl');
 
-    axios
-      .post('https://api.cloudinary.com/v1_1/dwviwb8zr/image/upload', formData)
-      .then((response) => console.log(response));
+    const response = await axios.post(
+      'https://api.cloudinary.com/v1_1/dwviwb8zr/image/upload',
+      formData,
+    );
+
+    return response.data.url;
   };
 
   return (
