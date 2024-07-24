@@ -2,11 +2,13 @@ import {
   BaseEntity,
   Column,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { Content } from '../content/content.entity';
+import { User } from 'src/user/user.entity';
 
 @Entity()
 export class Course extends BaseEntity {
@@ -26,6 +28,9 @@ export class Course extends BaseEntity {
     nullable: true,
   })
   imageUrl?: string;
+
+  @ManyToMany(() => User, (user) => user.favoriteCourses)
+  users: User[];
 
   @OneToMany(() => Content, (content) => content.course)
   contents: Content[];
