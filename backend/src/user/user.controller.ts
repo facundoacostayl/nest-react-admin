@@ -77,4 +77,9 @@ export class UserController {
   async removeFavoriteCourse(@Body() createFavoriteDto: CreateFavoriteDto) {
     return this.userService.removeFavoriteCourse(createFavoriteDto);
   }
+
+  @Get('favorite/all')
+  async getAllFavoriteCourses() {
+    return this.userService.getAllFavoriteCourses();
+  }
 }

@@ -126,6 +126,25 @@ export class UserService {
     throw new Error('User not found');
   }
 
+  async getAllFavoriteCourses(): Promise<{ user: User; course: Course }[]> {
+    const users = await User.find({
+      relations: ['favoriteCourses'],
+    });
+
+    if (users) {
+      const allFavorites = [];
+      for (const user of users) {
+        for (const course of user.favoriteCourses) {
+          allFavorites.push({ user, course });
+        }
+      }
+
+      return allFavorites;
+    }
+
+    throw new Error('Users not found');
+  }
+
   /* Hash the refresh token and save it to the database */
   async setRefreshToken(id: string, refreshToken: string): Promise<void> {
     const user = await this.findById(id);
