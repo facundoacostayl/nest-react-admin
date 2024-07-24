@@ -12,6 +12,8 @@ module.exports = {
         'brand-header-background': '#e2e1e1',
         'primary-white': '#ffffff',
         'white-hover': '#f2f2f2',
+        'primary-gray': '#4b5563',
+        'gray-hover': '#374151',
       },
     },
   },
