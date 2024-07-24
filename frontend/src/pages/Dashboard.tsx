@@ -34,8 +34,6 @@ export default function Dashboard() {
             </div>
           </div>
         ) : null}
-
-        <UpdateProfile />
       </div>
     </Layout>
   );
