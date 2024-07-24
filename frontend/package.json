@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@cloudinary/react": "^1.13.0",
+    "@cloudinary/url-gen": "^1.19.0",
     "@tailwindcss/forms": "^0.3.2",
     "@testing-library/dom": ">=7.21.4",
     "@testing-library/jest-dom": "^5.11.4",

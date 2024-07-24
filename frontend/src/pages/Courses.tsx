@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
@@ -17,6 +18,7 @@ export default function Courses() {
 
   const [addCourseShow, setAddCourseShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
+  const [imageToUpload, setImageToUpload] = useState(null);
 
   const { authenticatedUser } = useAuth();
   const { data, isLoading } = useQuery(
@@ -42,6 +44,10 @@ export default function Courses() {
 
   const saveCourse = async (createCourseRequest: CreateCourseRequest) => {
     try {
+      if (imageToUpload) {
+        uploadImage();
+      }
+
       await courseService.save(createCourseRequest);
       setAddCourseShow(false);
       reset();
@@ -49,6 +55,16 @@ export default function Courses() {
     } catch (error) {
       setError(error.response.data.message);
     }
+  };
+
+  const uploadImage = () => {
+    const formData = new FormData();
+    formData.append('file', imageToUpload);
+    formData.append('upload_preset', 'qd303rrl');
+
+    axios
+      .post('https://api.cloudinary.com/v1_1/dwviwb8zr/image/upload', formData)
+      .then((response) => console.log(response));
   };
 
   return (
@@ -133,6 +149,10 @@ export default function Courses() {
             disabled={isSubmitting}
             required
             {...register('description')}
+          />
+          <input
+            type="file"
+            onChange={(e) => setImageToUpload(e.target.files[0])}
           />
           <button className="btn" disabled={isSubmitting}>
             {isSubmitting ? (
