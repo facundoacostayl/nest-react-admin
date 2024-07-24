@@ -3,7 +3,8 @@ import { ILike } from 'typeorm';
 
 import { CreateCourseDto, UpdateCourseDto } from './course.dto';
 import { Course } from './course.entity';
-import { CourseQuery } from './course.query';
+import { CourseQuery /*PaginatedCourseQuery*/ } from './course.query';
+import { SortQuery } from './sort.query';
 
 @Injectable()
 export class CourseService {
@@ -26,6 +27,31 @@ export class CourseService {
       },
     });
   }
+
+  async findAllSortedByName(sortQuery: SortQuery): Promise<Course[]> {
+    Object.keys(sortQuery).forEach((key) => {
+      sortQuery[key] = ILike(`%${sortQuery[key]}%`);
+    });
+    return await Course.find({
+      order: {
+        name: 'DESC',
+      },
+    });
+  }
+
+  /*async findAllPaginated(courseQuery: PaginatedCourseQuery): Promise<Course[]> {
+    //Set page number to index for multiplying it * the number of values setted in size.
+    const pageIndex = courseQuery.page - 1;
+
+    //Multiply pageIndex * the number of values setted in size.
+    const numberOfValuesToSkip = courseQuery.size * pageIndex;
+    return await Course.find({
+      order: {
+        name: 'ASC',
+        description: 'ASC',
+      },
+    });
+  }*/
 
   async findById(id: string): Promise<Course> {
     const course = await Course.findOne(id);

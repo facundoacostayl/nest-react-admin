@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
+import ReactPaginate from 'react-paginate';
 import { useQuery } from 'react-query';
 
 import CoursesTable from '../components/courses/CoursesTable';
@@ -29,6 +30,8 @@ export default function Courses() {
       refetchInterval: 1000,
     },
   );
+
+  //const clientsPerPage = data.length / 5;
 
   const {
     register,
@@ -81,6 +84,19 @@ export default function Courses() {
       </div>
 
       <CoursesTable data={data} isLoading={isLoading} />
+      {/*<ReactPaginate
+        breakLabel="..."
+        pageRangeDisplayed={5}
+        previousLabel={'<'}
+        nextLabel={'>'}
+        pageCount={clientsPerPage}
+        onPageChange={changePage}
+        containerClassName="flex gap-5 justify-center items-center py-5"
+        previousLinkClassName="text-lg font-semibold text-blue-800 border border-gray-200 shadow-md p-2 rounded-full"
+        nextLinkClassName="text-lg font-semibold text-blue-800 border border-gray-200 shadow-md p-2 rounded-full"
+        disabledClassName="hidden"
+        activeClassName="text-lg font-semibold text-white bg-blue-800 p-1 px-3 rounded-full"
+      />*/}
 
       {/* Add User Modal */}
       <Modal show={addCourseShow}>

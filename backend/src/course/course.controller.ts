@@ -23,6 +23,7 @@ import { CreateCourseDto, UpdateCourseDto } from './course.dto';
 import { Course } from './course.entity';
 import { CourseQuery } from './course.query';
 import { CourseService } from './course.service';
+import { SortQuery } from './sort.query';
 
 @Controller('courses')
 @ApiBearerAuth()
@@ -44,6 +45,18 @@ export class CourseController {
   async findAll(@Query() courseQuery: CourseQuery): Promise<Course[]> {
     return await this.courseService.findAll(courseQuery);
   }
+
+  @Get('/sort')
+  async findAllSortedByName(@Query() sortQuery: SortQuery): Promise<Course[]> {
+    return await this.courseService.findAllSortedByName(sortQuery);
+  }
+
+  /*@Get('/pages')
+  async findAllPaginated(
+    @Query() courseQuery: PaginatedCourseQuery,
+  ): Promise<Course[]> {
+    return await this.courseService.findAllPaginated(courseQuery);
+  }*/
 
   @Get('/:id')
   async findOne(@Param('id') id: string): Promise<Course> {
