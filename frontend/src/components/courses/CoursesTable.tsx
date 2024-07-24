@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import Course from '../../models/course/Course';
 import UpdateCourseRequest from '../../models/course/UpdateCourseRequest';
+import AddFavoriteCourseRequest from '../../models/user/AddFavoriteCourseRequest';
 import courseService from '../../services/CourseService';
+import userService from '../../services/UserService';
 import Modal from '../shared/Modal';
 import Table from '../shared/Table';
 import TableItem from '../shared/TableItem';
@@ -57,6 +59,16 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
     }
   };
 
+  const handleAddFavoriteCourse = async (
+    addFavoriteCourseRequest: AddFavoriteCourseRequest,
+  ) => {
+    try {
+      await userService.addFavoriteCourse(addFavoriteCourseRequest);
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
+
   const isSubmittedHandler = () => {
     setIsSubmitted(true);
     setTimeout(() => {
@@ -95,11 +107,20 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                     {new Date(dateCreated).toLocaleDateString()}
                   </TableItem>
                   <TableItem>
-                    <div className="mx-auto text-xl">
-                      <span className="cursor-pointer text-gray-400 hover:text-primary-red">
-                        ❤
-                      </span>
-                    </div>
+                    <span
+                      onClick={() =>
+                        handleAddFavoriteCourse({
+                          userId: authenticatedUser.id,
+                          courseId: id,
+                        })
+                      }
+                      /*className={`cursor-pointer text-xl text-gray-400 hover:text-primary-red ${
+                        authenticatedUser.favoriteCourses?.includes(id) &&
+                        'text-primary-red hover:text-primary-gray'
+                      } `}*/
+                    >
+                      ❤
+                    </span>
                   </TableItem>
                   <TableItem className="text-right">
                     {['admin', 'editor'].includes(authenticatedUser.role) ? (

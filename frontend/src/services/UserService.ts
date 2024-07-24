@@ -1,3 +1,5 @@
+import AddFavoriteCourseRequest from '../models/user/AddFavoriteCourseRequest';
+import addFavoriteCourseRequest from '../models/user/AddFavoriteCourseRequest';
 import CreateUserRequest from '../models/user/CreateUserRequest';
 import UpdateUserRequest from '../models/user/UpdateUserRequest';
 import User from '../models/user/User';
@@ -45,6 +47,20 @@ class UserService {
 
   async delete(id: string): Promise<void> {
     await apiService.delete(`/api/users/${id}`);
+  }
+
+  async addFavoriteCourse(
+    addFavoriteCourseRequest: AddFavoriteCourseRequest,
+  ): Promise<void> {
+    await apiService.post('/api/users/favorite', addFavoriteCourseRequest);
+  }
+
+  async deleteFavoriteCourse(
+    addFavoriteCourseRequest: AddFavoriteCourseRequest,
+  ): Promise<void> {
+    await apiService.delete(
+      `/api/users/favorite/${addFavoriteCourseRequest.userId}/${addFavoriteCourseRequest.courseId}`,
+    );
   }
 }
 
