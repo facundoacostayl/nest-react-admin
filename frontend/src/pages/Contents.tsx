@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Loader, Plus, X } from 'react-feather';
+import { Check, Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router';
@@ -20,6 +20,7 @@ export default function Course() {
   const [description, setDescription] = useState('');
   const [addContentShow, setAddContentShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const userQuery = useQuery('user', async () => courseService.findOne(id));
 
@@ -45,12 +46,26 @@ export default function Course() {
   const saveCourse = async (createContentRequest: CreateContentRequest) => {
     try {
       await contentService.save(id, createContentRequest);
-      setAddContentShow(false);
+      isSubmittedHandler();
+      addContentShowHandler();
       reset();
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
     }
+  };
+
+  const isSubmittedHandler = () => {
+    setIsSubmitted(true);
+    setTimeout(() => {
+      setIsSubmitted(false);
+    }, 1000);
+  };
+
+  const addContentShowHandler = () => {
+    setTimeout(() => {
+      setAddContentShow(false);
+    }, 1000);
   };
 
   return (
@@ -125,12 +140,15 @@ export default function Course() {
             required
             {...register('description')}
           />
-          <button className="btn" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <Loader className="animate-spin mx-auto" />
-            ) : (
-              'Save'
+          <button
+            className={`btn ${isSubmitted && 'btn success'} w-full`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting && <Loader className="animate-spin mx-auto" />}
+            {isSubmitted && !isSubmitting && (
+              <Check className="animate-ping mx-auto" />
             )}
+            {!isSubmitting && !isSubmitted && 'Save'}
           </button>
           {error ? (
             <div className="text-red-500 p-3 font-semibold border rounded-md bg-red-50">

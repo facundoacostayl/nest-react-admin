@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { AlertTriangle, Loader, X } from 'react-feather';
+import { AlertTriangle, Check, Loader, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 
 import useAuth from '../../hooks/useAuth';
@@ -27,6 +27,7 @@ export default function ContentsTable({
   const [selectedContentId, setSelectedContentId] = useState<string>();
   const [error, setError] = useState<string>();
   const [updateShow, setUpdateShow] = useState<boolean>(false);
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const {
     register,
@@ -55,12 +56,26 @@ export default function ContentsTable({
         selectedContentId,
         updateContentRequest,
       );
-      setUpdateShow(false);
+      isSubmittedHandler();
+      updateShowHandler();
       reset();
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
     }
+  };
+
+  const isSubmittedHandler = () => {
+    setIsSubmitted(true);
+    setTimeout(() => {
+      setIsSubmitted(false);
+    }, 1000);
+  };
+
+  const updateShowHandler = () => {
+    setTimeout(() => {
+      setUpdateShow(false);
+    }, 1000);
   };
 
   return (
@@ -194,12 +209,15 @@ export default function ContentsTable({
               disabled={isSubmitting}
               {...register('description')}
             />
-            <button className="btn" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <Loader className="animate-spin mx-auto" />
-              ) : (
-                'Save'
+            <button
+              className={`btn ${isSubmitted && 'btn success'} w-full`}
+              disabled={isSubmitting}
+            >
+              {isSubmitting && <Loader className="animate-spin mx-auto" />}
+              {isSubmitted && !isSubmitting && (
+                <Check className="animate-ping mx-auto" />
               )}
+              {!isSubmitting && !isSubmitted && 'Save'}
             </button>
             {error ? (
               <div className="text-red-500 p-3 font-semibold border rounded-md bg-red-50">
