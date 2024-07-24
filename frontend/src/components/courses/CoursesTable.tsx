@@ -73,11 +73,20 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
   return (
     <>
       <div className="table-container">
-        <Table columns={['Name', 'Description', 'Created', 'Favorites']}>
+        <Table columns={['', 'Name', 'Description', 'Created', 'Favorites']}>
           {isLoading
             ? null
-            : data.map(({ id, name, description, dateCreated }) => (
+            : data.map(({ id, name, description, dateCreated, imageUrl }) => (
                 <tr key={id}>
+                  <TableItem>
+                    <div className="w-24 h-24">
+                      <img
+                        className="max-w-full h-24 object-cover"
+                        src={imageUrl}
+                        alt={name}
+                      />
+                    </div>
+                  </TableItem>
                   <TableItem>
                     <Link to={`/courses/${id}`}>{name}</Link>
                   </TableItem>
