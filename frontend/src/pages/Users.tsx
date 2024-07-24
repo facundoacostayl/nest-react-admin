@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Loader, Plus, X } from 'react-feather';
+import { Check, Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
@@ -37,6 +37,7 @@ export default function Users() {
       refetchInterval: 1000,
     },
   );
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const {
     register,
@@ -48,12 +49,26 @@ export default function Users() {
   const saveUser = async (createUserRequest: CreateUserRequest) => {
     try {
       await userService.save(createUserRequest);
-      setAddUserShow(false);
+      isSubmittedHandler();
+      addUserShowHandler();
       setError(null);
       reset();
     } catch (error) {
       setError(error.response.data.message);
     }
+  };
+
+  const isSubmittedHandler = () => {
+    setIsSubmitted(true);
+    setTimeout(() => {
+      setIsSubmitted(false);
+    }, 1000);
+  };
+
+  const addUserShowHandler = () => {
+    setTimeout(() => {
+      setAddUserShow(false);
+    }, 1000);
   };
 
   return (
@@ -174,12 +189,15 @@ export default function Users() {
             <option value="editor">Editor</option>
             <option value="admin">Admin</option>
           </select>
-          <button className="btn" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <Loader className="animate-spin mx-auto" />
-            ) : (
-              'Save'
+          <button
+            className={`btn ${isSubmitted && 'btn success'} w-full`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting && <Loader className="animate-spin mx-auto" />}
+            {isSubmitted && !isSubmitting && (
+              <Check className="animate-ping mx-auto" />
             )}
+            {!isSubmitting && !isSubmitted && 'Save'}
           </button>
           {error ? (
             <div className="text-red-500 p-3 font-semibold border rounded-md bg-red-50">
