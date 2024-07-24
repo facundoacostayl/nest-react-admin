@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState } from 'react';
-import { Loader, Plus, X } from 'react-feather';
+import { Check, Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import ReactPaginate from 'react-paginate';
 import { useQuery } from 'react-query';
@@ -32,6 +32,7 @@ export default function Courses() {
       refetchInterval: 1000,
     },
   );
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   //const clientsPerPage = data.length / 5;
 
@@ -50,7 +51,8 @@ export default function Courses() {
       }
 
       await courseService.save(createCourseRequest);
-      setAddCourseShow(false);
+      isSubmittedHandler();
+      addCourseShowHandler();
       reset();
       setError(null);
     } catch (error) {
@@ -69,6 +71,19 @@ export default function Courses() {
     );
 
     return response.data.url;
+  };
+
+  const isSubmittedHandler = () => {
+    setIsSubmitted(true);
+    setTimeout(() => {
+      setIsSubmitted(false);
+    }, 1000);
+  };
+
+  const addCourseShowHandler = () => {
+    setTimeout(() => {
+      setAddCourseShow(false);
+    }, 1000);
   };
 
   return (
@@ -158,12 +173,15 @@ export default function Courses() {
             type="file"
             onChange={(e) => setImageToUpload(e.target.files[0])}
           />
-          <button className="btn" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <Loader className="animate-spin mx-auto" />
-            ) : (
-              'Save'
+          <button
+            className={`btn ${isSubmitted && 'btn success'} w-full`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting && <Loader className="animate-spin mx-auto" />}
+            {isSubmitted && !isSubmitting && (
+              <Check className="animate-ping mx-auto" />
             )}
+            {!isSubmitting && !isSubmitted && 'Save'}
           </button>
           {error ? (
             <div className="text-red-500 p-3 font-semibold border rounded-md bg-red-50">
