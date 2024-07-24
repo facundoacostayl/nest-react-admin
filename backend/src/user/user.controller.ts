@@ -73,13 +73,21 @@ export class UserController {
     return this.userService.addFavoriteCourse(createFavoriteDto);
   }
 
-  @Delete('favorite')
-  async removeFavoriteCourse(@Body() createFavoriteDto: CreateFavoriteDto) {
-    return this.userService.removeFavoriteCourse(createFavoriteDto);
+  @Delete('favorite/:userId/:courseId')
+  async removeFavoriteCourse(
+    @Param('userId') userId: string,
+    @Param('courseId') courseId: string,
+  ) {
+    return this.userService.removeFavoriteCourse({ userId, courseId });
   }
 
   @Get('favorite/all')
   async getAllFavoriteCourses() {
     return this.userService.getAllFavoriteCourses();
+  }
+
+  @Get('favorite/user/:id')
+  async getUserWithFavoriteCourses(@Param('id') id: string): Promise<User> {
+    return this.userService.findUserWithFavoriteCourses(id);
   }
 }

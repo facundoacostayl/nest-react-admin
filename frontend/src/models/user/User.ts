@@ -1,3 +1,5 @@
+import Course from '../course/Course';
+
 export default interface User {
   id: string;
   firstName: string;
@@ -5,4 +7,5 @@ export default interface User {
   username: string;
   role: string;
   isActive: boolean;
+  favoriteCourses: Course[];
 }

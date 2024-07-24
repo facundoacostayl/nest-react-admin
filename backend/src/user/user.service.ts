@@ -126,23 +126,32 @@ export class UserService {
     throw new Error('User not found');
   }
 
-  async getAllFavoriteCourses(): Promise<{ user: User; course: Course }[]> {
-    const users = await User.find({
+  async findUserWithFavoriteCourses(userId: string): Promise<User> {
+    const user = await User.findOne({
+      where: { id: userId },
       relations: ['favoriteCourses'],
     });
 
-    if (users) {
-      const allFavorites = [];
-      for (const user of users) {
-        for (const course of user.favoriteCourses) {
-          allFavorites.push({ user, course });
-        }
-      }
-
-      return allFavorites;
+    if (!user) {
+      throw new Error(`User with ID ${userId} not found`);
     }
 
-    throw new Error('Users not found');
+    return user;
+  }
+
+  async getAllFavoriteCourses(): Promise<
+    { userId: string; courseId: string }[]
+  > {
+    const users = await User.find({ relations: ['favoriteCourses'] });
+
+    const allFavorites: { userId: string; courseId: string }[] = [];
+    for (const user of users) {
+      for (const course of user.favoriteCourses) {
+        allFavorites.push({ userId: user.id, courseId: course.id });
+      }
+    }
+
+    return allFavorites;
   }
 
   /* Hash the refresh token and save it to the database */

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AlertTriangle, Check, Loader, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
@@ -7,6 +7,7 @@ import useAuth from '../../hooks/useAuth';
 import Course from '../../models/course/Course';
 import UpdateCourseRequest from '../../models/course/UpdateCourseRequest';
 import AddFavoriteCourseRequest from '../../models/user/AddFavoriteCourseRequest';
+import User from '../../models/user/User';
 import courseService from '../../services/CourseService';
 import userService from '../../services/UserService';
 import Modal from '../shared/Modal';
@@ -26,6 +27,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
   const [error, setError] = useState<string>();
   const [updateShow, setUpdateShow] = useState<boolean>(false);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [favoriteCoursesOfUser, setFavoriteCoursesOfUser] = useState<User>();
 
   const {
     register,
@@ -59,14 +61,30 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
     }
   };
 
-  const handleAddFavoriteCourse = async (
+  const handleFavoriteCourse = async (
     addFavoriteCourseRequest: AddFavoriteCourseRequest,
   ) => {
     try {
-      await userService.addFavoriteCourse(addFavoriteCourseRequest);
+      console.log(addFavoriteCourseRequest);
+      if (
+        !favoriteCoursesOfUser?.favoriteCourses.find(
+          (course) => course.id === addFavoriteCourseRequest.courseId,
+        )
+      ) {
+        await userService.addFavoriteCourse(addFavoriteCourseRequest);
+      } else {
+        await userService.deleteFavoriteCourse(addFavoriteCourseRequest);
+      }
     } catch (error) {
       setError(error.response.data.message);
     }
+  };
+
+  const findFavoriteCoursesOfUser = async () => {
+    const favoriteCoursesList = await userService.findFavoriteCourses(
+      authenticatedUser.id,
+    );
+    setFavoriteCoursesOfUser(favoriteCoursesList);
   };
 
   const isSubmittedHandler = () => {
@@ -81,6 +99,10 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
       setUpdateShow(false);
     }, 1000);
   };
+
+  useEffect(() => {
+    findFavoriteCoursesOfUser();
+  }, [handleFavoriteCourse]);
 
   return (
     <>
@@ -109,15 +131,18 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                   <TableItem>
                     <span
                       onClick={() =>
-                        handleAddFavoriteCourse({
+                        handleFavoriteCourse({
                           userId: authenticatedUser.id,
                           courseId: id,
                         })
                       }
-                      /*className={`cursor-pointer text-xl text-gray-400 hover:text-primary-red ${
-                        authenticatedUser.favoriteCourses?.includes(id) &&
-                        'text-primary-red hover:text-primary-gray'
-                      } `}*/
+                      className={`cursor-pointer text-xl ${
+                        favoriteCoursesOfUser?.favoriteCourses.find(
+                          (course) => course.id === id,
+                        )
+                          ? 'text-primary-red hover:text-primary-gray'
+                          : 'text-primary-gray hover:text-primary-red'
+                      } `}
                     >
                       ❤
                     </span>

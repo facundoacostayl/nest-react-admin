@@ -62,6 +62,12 @@ class UserService {
       `/api/users/favorite/${addFavoriteCourseRequest.userId}/${addFavoriteCourseRequest.courseId}`,
     );
   }
+
+  async findFavoriteCourses(id: string) {
+    const response = (await apiService.get(`api/users/favorite/user/${id}`))
+      .data;
+    return response;
+  }
 }
 
 export default new UserService();
