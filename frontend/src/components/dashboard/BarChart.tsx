@@ -38,42 +38,31 @@ export default function BarChart() {
   useEffect(() => {
     data &&
       setChartData({
-        labels: Array.from(new Set(data.map((course) => course.description))),
+        labels: Array.from(new Set(data.map((course) => course.name))),
         datasets: [
           {
-            label: 'Assigned',
+            label: 'Assignations',
             data: Object.values(
               data.reduce((acc, course) => {
-                acc[course.description] = (acc[course.description] || 0) + 1;
+                acc[course.name] = (acc[course.name] || 0) + 1;
                 return acc;
               }, {}),
             ),
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgb(255, 99, 132)',
-            borderWidth: 1,
-          },
-          {
-            label: 'Ranked',
-            data: Object.values(
-              data.reduce((acc, course) => {
-                acc[course.description] = (acc[course.description] || 0) + 1;
-                return acc;
-              }, {}),
-            ),
-            backgroundColor: 'rgba(201, 203, 207, 0.2)',
-            borderColor: 'rgb(201, 203, 207)',
+
+            backgroundColor: 'rgba(255, 159, 64, 0.2)',
+            borderColor: 'rgb(255, 159, 64)',
             borderWidth: 1,
           },
           {
             label: 'Marked as favorite',
             data: Object.values(
               data.reduce((acc, course) => {
-                acc[course.description] = (acc[course.description] || 0) + 1;
+                acc[course.name] = (acc[course.name] || 0) + 1;
                 return acc;
               }, {}),
             ),
-            backgroundColor: 'rgba(255, 159, 64, 0.2)',
-            borderColor: 'rgb(255, 159, 64)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgb(255, 99, 132)',
             borderWidth: 1,
           },
         ],
@@ -86,7 +75,7 @@ export default function BarChart() {
         },
         title: {
           display: 'true',
-          text: 'Courses statistics details',
+          text: 'Our popular courses:',
         },
       },
     });
