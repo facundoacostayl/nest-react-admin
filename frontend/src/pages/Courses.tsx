@@ -169,7 +169,11 @@ export default function Courses() {
             required
             {...register('description')}
           />
+          <label className="text-primary-gray mt-3" htmlFor="image-input">
+            Upload an image (optional)
+          </label>
           <input
+            title="image-input"
             type="file"
             onChange={(e) => setImageToUpload(e.target.files[0])}
           />
