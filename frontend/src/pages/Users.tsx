@@ -33,9 +33,6 @@ export default function Users() {
         })
       ).filter((user) => user.id !== authenticatedUser.id);
     },
-    {
-      refetchInterval: 1000,
-    },
   );
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 

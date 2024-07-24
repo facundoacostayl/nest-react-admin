@@ -21,16 +21,11 @@ export default function Courses() {
   const [imageToUpload, setImageToUpload] = useState(null);
 
   const { authenticatedUser } = useAuth();
-  const { data, isLoading } = useQuery(
-    ['courses', name, description],
-    () =>
-      courseService.findAll({
-        name: name || undefined,
-        description: description || undefined,
-      }),
-    {
-      refetchInterval: 1000,
-    },
+  const { data, isLoading } = useQuery(['courses', name, description], () =>
+    courseService.findAll({
+      name: name || undefined,
+      description: description || undefined,
+    }),
   );
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 

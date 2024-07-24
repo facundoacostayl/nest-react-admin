@@ -38,9 +38,6 @@ export default function Course() {
         name: name || undefined,
         description: description || undefined,
       }),
-    {
-      refetchInterval: 1000,
-    },
   );
 
   const saveCourse = async (createContentRequest: CreateContentRequest) => {
