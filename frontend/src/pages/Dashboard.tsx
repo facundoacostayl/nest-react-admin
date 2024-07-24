@@ -1,7 +1,9 @@
 import { useQuery } from 'react-query';
 
+import BarChart from '../components/dashboard/BarChart';
 import UpdateProfile from '../components/dashboard/UpdateProfile';
 import Layout from '../components/layout';
+import courseService from '../services/CourseService';
 import statsService from '../services/StatsService';
 
 export default function Dashboard() {
@@ -34,6 +36,9 @@ export default function Dashboard() {
             </div>
           </div>
         ) : null}
+      </div>
+      <div className="hidden mx-auto md:block md:w-5/6 xxl:w-4/6 mt-10">
+        <BarChart />
       </div>
     </Layout>
   );
