@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Loader } from 'react-feather';
+import { Check, Loader } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
@@ -10,6 +10,7 @@ import userService from '../../services/UserService';
 export default function UpdateProfile() {
   const { authenticatedUser } = useAuth();
   const [error, setError] = useState<string>();
+  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
   const { data, isLoading, refetch } = useQuery(
     `user-${authenticatedUser.id}`,
@@ -29,12 +30,20 @@ export default function UpdateProfile() {
         delete updateUserRequest.username;
       }
       await userService.update(authenticatedUser.id, updateUserRequest);
+      isSubmittedHandler();
       setError(null);
       setValue('password', '');
       refetch();
     } catch (error) {
       setError(error.response.data.message);
     }
+  };
+
+  const isSubmittedHandler = () => {
+    setIsSubmitted(true);
+    setTimeout(() => {
+      setIsSubmitted(false);
+    }, 1000);
   };
 
   if (!isLoading) {
@@ -94,12 +103,15 @@ export default function UpdateProfile() {
               {...register('password')}
             />
           </div>
-          <button className="btn w-full" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <Loader className="animate-spin mx-auto" />
-            ) : (
-              'Update'
+          <button
+            className={`btn ${isSubmitted && 'btn success'} w-full`}
+            disabled={isSubmitting}
+          >
+            {isSubmitting && <Loader className="animate-spin mx-auto" />}
+            {isSubmitted && !isSubmitting && (
+              <Check className="animate-ping mx-auto" />
             )}
+            {!isSubmitting && !isSubmitted && 'Update'}
           </button>
           {error ? (
             <div className="text-red-500 p-3 font-semibold border rounded-md bg-red-50">
