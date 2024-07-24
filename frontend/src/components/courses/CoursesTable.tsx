@@ -73,7 +73,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
   return (
     <>
       <div className="table-container">
-        <Table columns={['Name', 'Description', 'Created']}>
+        <Table columns={['Name', 'Description', 'Created', 'Favorites']}>
           {isLoading
             ? null
             : data.map(({ id, name, description, dateCreated }) => (
@@ -84,6 +84,13 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                   <TableItem>{description}</TableItem>
                   <TableItem>
                     {new Date(dateCreated).toLocaleDateString()}
+                  </TableItem>
+                  <TableItem>
+                    <div className="mx-auto text-xl">
+                      <span className="cursor-pointer text-gray-400 hover:text-primary-red">
+                        ❤
+                      </span>
+                    </div>
                   </TableItem>
                   <TableItem className="text-right">
                     {['admin', 'editor'].includes(authenticatedUser.role) ? (
