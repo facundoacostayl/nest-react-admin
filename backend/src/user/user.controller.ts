@@ -24,6 +24,7 @@ import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserQuery } from './user.query';
 import { UserService } from './user.service';
+import { CreateFavoriteDto } from './user.create-favorite.dto';
 
 @Controller('users')
 @ApiTags('Users')
@@ -65,5 +66,15 @@ export class UserController {
   @Roles(Role.Admin)
   async delete(@Param('id') id: string): Promise<string> {
     return await this.userService.delete(id);
+  }
+
+  @Post('favorite')
+  async addFavoriteCourse(@Body() createFavoriteDto: CreateFavoriteDto) {
+    return this.userService.addFavoriteCourse(createFavoriteDto);
+  }
+
+  @Delete('favorite')
+  async removeFavoriteCourse(@Body() createFavoriteDto: CreateFavoriteDto) {
+    return this.userService.removeFavoriteCourse(createFavoriteDto);
   }
 }

@@ -5,6 +5,8 @@ import { ILike } from 'typeorm';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserQuery } from './user.query';
+import { CreateFavoriteDto } from './user.create-favorite.dto';
+import { Course } from 'src/course/course.entity';
 
 @Injectable()
 export class UserService {
@@ -87,6 +89,41 @@ export class UserService {
 
   async count(): Promise<number> {
     return await User.count();
+  }
+
+  async addFavoriteCourse(createFavoriteDto: CreateFavoriteDto): Promise<User> {
+    const { userId, courseId } = createFavoriteDto;
+    const user = await User.findOne({
+      where: { id: userId },
+      relations: ['favoriteCourses'],
+    });
+    const course = await Course.findOne({ where: { id: courseId } });
+
+    if (user && course) {
+      user.favoriteCourses.push(course);
+      return User.save(user);
+    }
+
+    throw new Error('User or Course not found');
+  }
+
+  async removeFavoriteCourse(
+    createFavoriteDto: CreateFavoriteDto,
+  ): Promise<User> {
+    const { userId, courseId } = createFavoriteDto;
+    const user = await User.findOne({
+      where: { id: userId },
+      relations: ['favoriteCourses'],
+    });
+
+    if (user) {
+      user.favoriteCourses = user.favoriteCourses.filter(
+        (course) => course.id !== courseId,
+      );
+      return User.save(user);
+    }
+
+    throw new Error('User not found');
   }
 
   /* Hash the refresh token and save it to the database */
