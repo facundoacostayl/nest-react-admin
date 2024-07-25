@@ -83,7 +83,7 @@ export class UserController {
 
   @Get('favorite/all')
   async getAllFavoriteCourses() {
-    return this.userService.getAllFavoriteCourses();
+    return this.userService.findAllFavoriteCourses();
   }
 
   @Get('favorite/user/:id')

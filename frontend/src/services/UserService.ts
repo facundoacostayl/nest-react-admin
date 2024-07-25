@@ -64,9 +64,11 @@ class UserService {
   }
 
   async findFavoriteCourses(id: string) {
-    const response = (await apiService.get(`api/users/favorite/user/${id}`))
-      .data;
-    return response;
+    return (await apiService.get(`api/users/favorite/user/${id}`)).data;
+  }
+
+  async findAllFavoriteCourses() {
+    return (await apiService.get('api/users/favorite/all')).data;
   }
 }
 

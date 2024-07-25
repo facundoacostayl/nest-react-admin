@@ -139,7 +139,7 @@ export class UserService {
     return user;
   }
 
-  async getAllFavoriteCourses(): Promise<
+  async findAllFavoriteCourses(): Promise<
     { userId: string; courseId: string }[]
   > {
     const users = await User.find({ relations: ['favoriteCourses'] });
