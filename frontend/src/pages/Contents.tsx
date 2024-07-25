@@ -31,7 +31,7 @@ export default function Course() {
     reset,
   } = useForm<CreateContentRequest>();
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     [`contents-${id}`, name, description],
     async () =>
       contentService.findAll(id, {
@@ -46,6 +46,7 @@ export default function Course() {
       isSubmittedHandler();
       addContentShowHandler();
       reset();
+      refetch();
       setError(null);
     } catch (error) {
       setError(error.response.data.message);

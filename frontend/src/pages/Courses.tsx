@@ -1,8 +1,7 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Check, Loader, Plus, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
-import ReactPaginate from 'react-paginate';
 import { useQuery } from 'react-query';
 
 import CoursesTable from '../components/courses/CoursesTable';
@@ -21,11 +20,13 @@ export default function Courses() {
   const [imageToUpload, setImageToUpload] = useState(null);
 
   const { authenticatedUser } = useAuth();
-  const { data, isLoading } = useQuery(['courses', name, description], () =>
-    courseService.findAll({
-      name: name || undefined,
-      description: description || undefined,
-    }),
+  const { data, isLoading, refetch } = useQuery(
+    ['courses', name, description],
+    () =>
+      courseService.findAll({
+        name: name || undefined,
+        description: description || undefined,
+      }),
   );
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
 
@@ -46,9 +47,11 @@ export default function Courses() {
       }
 
       await courseService.save(createCourseRequest);
+
       isSubmittedHandler();
       addCourseShowHandler();
       reset();
+      refetch();
       setError(null);
     } catch (error) {
       setError(error.response.data.message);
@@ -80,6 +83,8 @@ export default function Courses() {
       setAddCourseShow(false);
     }, 1000);
   };
+
+  useEffect(() => {}, [saveCourse]);
 
   return (
     <Layout>

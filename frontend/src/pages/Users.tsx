@@ -21,7 +21,7 @@ export default function Users() {
   const [addUserShow, setAddUserShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     ['users', firstName, lastName, username, role],
     async () => {
       return (
@@ -50,6 +50,7 @@ export default function Users() {
       addUserShowHandler();
       setError(null);
       reset();
+      refetch();
     } catch (error) {
       setError(error.response.data.message);
     }
